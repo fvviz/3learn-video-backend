@@ -17,7 +17,8 @@ from asyncio import create_task
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://positive-clearly-tiger.ngrok-free.app"],
+    #allow_origins=["http://localhost:3000", "https://positive-clearly-tiger.ngrok-free.app"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
