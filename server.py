@@ -15,16 +15,7 @@ from asyncio import create_task
 
 app = FastAPI()
 
-# CORS middleware setup
-from fastapi.middleware.cors import CORSMiddleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+# CORS middleware setu
 # Constants and global state
 API_KEY = "AIzaSyBEXbKEkhwdvpf62CAMMVymn-MJ1Tt3Sjg"
 LOG_DIR = "log_files"
@@ -251,7 +242,7 @@ async def analyze_job(request: AnalyzeJobRequest):
 
         Please provide a structured analysis with the following sections:
         1. OVERALL_SUMMARY: A brief overview of the student's performance
-        2. POSITIVE_OBSERVATIONS: List key positive behaviors and patterns
+        2. NEGATIVE_OBSERVATIONS: List key negative behaviors and patterns  
         3. AREAS_FOR_IMPROVEMENT: List specific areas needing attention
         4. RECOMMENDATIONS: Practical suggestions for improvement
         5. ENGAGEMENT_PATTERN: Analysis of attention patterns over time
@@ -274,4 +265,35 @@ async def analyze_job(request: AnalyzeJobRequest):
         }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error analyzing job: {str(e)}") 
+        raise HTTPException(status_code=500, detail=f"Error analyzing job: {str(e)}")
+
+@app.post("/job_status")
+async def job_status(request: AnalyzeJobRequest):
+    csv_path = get_csv_path(request.job_id)
+    if not os.path.exists(csv_path):
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    try:
+        df = pd.read_csv(csv_path)
+        if df.empty:
+            return {"message": "No data recorded for this job"}
+
+        # Get the latest entry
+        latest = df.iloc[-1]
+        
+        # Format the timestamp for better readability
+        timestamp = datetime.fromisoformat(latest['timestamp'])
+        formatted_time = timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+        status_text = f"""
+Time: {formatted_time}
+Attentiveness Rating: {latest['attentiveness_rating']:.1f}/10
+Eye Contact Score: {latest['eye_contact_score']:.1f}/10
+Posture Score: {latest['posture_score']:.1f}/10
+Focus Duration: {latest['focus_duration']} seconds
+Comment: {latest['comment']}
+"""
+        return {"status": status_text.strip()}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting job status: {str(e)}") 

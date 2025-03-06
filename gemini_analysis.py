@@ -39,7 +39,7 @@ def analyze_student_attention(images: List[Union[str, PIL.Image.Image]], api_key
     contents = [
         """
         You are an expert supervisor monitoring student attention in an online class through webcam screenshots.
-        Analyze the student's attention levels and behavior in detail.
+        Analyze the student's attention levels and behavior in detail. DO not respond with anything but the final analysis.
         
         Provide your analysis in the following structured format:
         
@@ -59,6 +59,7 @@ def analyze_student_attention(images: List[Union[str, PIL.Image.Image]], api_key
         - Describe engagement indicators
         
         Format each metric clearly with "METRIC: score" on its own line for easy parsing.
+        You will directly return your result only.
         """
     ]
     contents.extend(processed_images)

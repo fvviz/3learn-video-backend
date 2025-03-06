@@ -60,41 +60,8 @@ def process_attention(job_id: str, images_to_process: List[str]):
     except Exception as e:
         print(f"Error during processing: {str(e)}")
 
-def wait_for_processing(job_id: str, max_retries: int = 30) -> bool:
-    """Wait for all image processing to complete"""
-    print("\nWaiting for processing to complete...")
-    for i in range(max_retries):
-        try:
-            response = requests.post(
-                f"{SERVER_URL}/analyze_job",
-                json={"job_id": job_id}
-            )
-            if response.status_code == 200:
-                data = response.json()
-                if isinstance(data, dict) and "metrics" in data:
-                    # If we have any entries, processing has started
-                    if data["metrics"]["total_entries"] > 0:
-                        print(f"Processing complete. Found {data['metrics']['total_entries']} entries.")
-                        return True
-            elif response.status_code == 404:
-                print(f"Waiting for first batch to process... ({i+1}/{max_retries})")
-            else:
-                print(f"Unexpected response: {response.status_code}")
-            
-            # Exponential backoff: wait longer as time goes on
-            wait_time = min(2 * (i + 1), 10)  # Start at 2s, max 10s
-            time.sleep(wait_time)
-            
-        except Exception as e:
-            print(f"Error while waiting: {str(e)}")
-            time.sleep(2)
-    return False
-
 def get_session_summary(job_id: str):
     """Get the final analysis summary from the server"""
-    if not wait_for_processing(job_id):
-        print("\nTimeout waiting for processing to complete. Attempting final summary anyway...")
-    
     try:
         response = requests.post(
             f"{SERVER_URL}/analyze_job",
@@ -102,10 +69,6 @@ def get_session_summary(job_id: str):
         )
         if response.status_code == 200:
             summary = response.json()
-            
-            if not summary.get("metrics", {}).get("total_entries", 0):
-                print("\nNo data was processed for this session.")
-                return
             
             print("\n" + "="*50)
             print("SESSION SUMMARY")
@@ -121,9 +84,8 @@ def get_session_summary(job_id: str):
             print(f"Total Focus Duration: {metrics['total_focus_duration']} seconds")
             
             # Display Analysis
-            if "analysis" in summary:
-                print("\nDETAILED ANALYSIS:")
-                print(summary["analysis"])
+            print("\nDETAILED ANALYSIS:")
+            print(summary["analysis"])
             
             print("="*50)
             
@@ -132,6 +94,20 @@ def get_session_summary(job_id: str):
     except Exception as e:
         print(f"\nError getting final analysis: {str(e)}")
 
+def get_job_status(job_id: str):
+    """Get the current status from the server"""
+    try:
+        response = requests.post(
+            f"{SERVER_URL}/job_status",
+            json={"job_id": job_id}
+        )
+        if response.status_code == 200:
+            return response.json()["status"]
+        return None
+    except Exception as e:
+        print(f"Error getting job status: {e}")
+        return None
+
 def main():
     try:
         # Create a unique job ID using timestamp
@@ -139,10 +115,11 @@ def main():
         print(f"Started monitoring session with job ID: {job_id}")
         
         last_capture_time = time.time()
+        last_status_check = time.time()
         capture_interval = 5  # Capture every 5 seconds
+        status_check_interval = 10  # Check status every 10 seconds
         current_batch_images = []
         analysis_lock = threading.Lock()
-        processing_threads = []
 
         while True:
             ret, frame = cap.read()
@@ -155,6 +132,16 @@ def main():
 
             current_time = time.time()
             
+            # Check job status every 10 seconds
+            if current_time - last_status_check >= status_check_interval:
+                status = get_job_status(job_id)
+                if status:
+                    print("\nCurrent Student Status:")
+                    print("="*50)
+                    print(status)
+                    print("="*50)
+                last_status_check = current_time
+
             # Capture frame every interval
             if current_time - last_capture_time >= capture_interval:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -163,20 +150,16 @@ def main():
                 
                 with analysis_lock:
                     current_batch_images.append(filename)
-                    # When we have 5 images, process them
                     if len(current_batch_images) >= 5:
                         images_to_process = current_batch_images.copy()
                         current_batch_images = []
-                        thread = threading.Thread(
+                        threading.Thread(
                             target=process_attention,
                             args=(job_id, images_to_process),
                             daemon=True
-                        )
-                        thread.start()
-                        processing_threads.append(thread)
+                        ).start()
                 
                 last_capture_time = current_time
-                print(f"Captured frame: {filename}")
 
             # Break loop on 'q' press
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -185,21 +168,11 @@ def main():
         # Process any remaining images
         with analysis_lock:
             if current_batch_images:
-                thread = threading.Thread(
-                    target=process_attention,
-                    args=(job_id, current_batch_images),
-                    daemon=True
-                )
-                thread.start()
-                processing_threads.append(thread)
+                process_attention(job_id, current_batch_images)
 
-        # Wait for all processing threads to complete
-        print("\nWaiting for processing threads to complete...")
-        for thread in processing_threads:
-            thread.join(timeout=30)  # Wait up to 30 seconds per thread
-            
-        # Additional wait to ensure server processing is complete
-        time.sleep(5)  # Give server a moment to finish processing
+        # Wait a bit for processing to complete
+        print("\nWaiting for final processing...")
+        time.sleep(5)
 
         # Get and display the final session summary
         get_session_summary(job_id)
