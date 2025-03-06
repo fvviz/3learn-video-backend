@@ -1,0 +1,109 @@
+timestamp,attentiveness_rating,comment,eye_contact_score,posture_score,focus_duration
+2025-03-06T17:50:53.289730,2.0,"Okay, here's my analysis of the student's attentiveness based on the image provided.
+
+ATTENTIVENESS_RATING: 2
+
+EYE_CONTACT_SCORE: 2
+- The student's gaze is not directed towards the camera, suggesting they are not looking at the screen.
+
+POSTURE_SCORE: 3
+- The student is positioned at a very strange angle in the photo, making it difficult to determine if they are sitting or standing. The position also doesn't appear conducive to learning.
+
+FOCUS_DURATION: 10%
+
+DETAILED_OBSERVATIONS:
+- The student is in a place that does not seem to be conducive to focusing, as a person is taking the selfie.
+- The student's attention is not directed towards the screen.
+- The student is likely distracted and not engaged with the online class.",2.0,3.0,6
+2025-03-06T17:51:19.321004,3.0,"Okay, I will analyze the student's attentiveness based on the provided images.
+
+1. ATTENTIVENESS_RATING (1-10): 3
+
+2. EYE_CONTACT_SCORE (1-10): 4
+- The student appears to be looking slightly upwards, but it's difficult to determine if it's directly at the screen. The angle is awkward.
+
+3. POSTURE_SCORE (1-10): 2
+- The posture seems quite bad. The student's head is tilted and the camera angle suggests that the student is too close to the camera, making it difficult to assess full posture but what is seen appears off balance. The awkward framing may also indicate repositioning or movement that distracts from the class.
+
+4. FOCUS_DURATION: Estimated at 30%
+
+5. DETAILED_OBSERVATIONS:
+- The angle of the camera is not ideal. It's partially blocked. It's hard to assess eye contact precisely.
+- The student's expression appears neutral, which doesn't necessarily indicate active engagement.
+- The proximity to the camera is problematic, limiting the view of the screen and body language. The lighting is too bright.
+- The observed behaviors suggest possible disengagement or at least a struggle to maintain focused attention on the online class. The positioning is unusual.
+",4.0,2.0,30
+2025-03-06T17:51:42.874562,2.0,"Okay, I will analyze the student's attention levels based on the provided webcam screenshots. Please note that accuracy is limited due to the image quality and the fixed viewpoint.
+
+1.  ATTENTIVENESS_RATING: 2
+
+2.  EYE_CONTACT_SCORE: 3
+    - The gaze direction is away from the screen in at least one image.
+
+3.  POSTURE_SCORE: 4
+    - The images show a tilted angle, indicating either a lack of proper setup or distraction.
+
+4.  FOCUS_DURATION: 10%
+
+5.  DETAILED_OBSERVATIONS:
+    - There are two individuals in the frame, raising questions about who is supposed to be the student in the online class and whether it is appropriate for another individual to be present.
+    - The gaze direction in the first image is unclear, but in at least one of the subsequent images, one of the individual looks up and away from the screen.
+    - The framing of the screenshot (looking up at the individuals) indicates a lack of ideal positioning or focus.
+    - The background shows building or architectural features, suggesting the students are not in a typical study environment.
+    - Overall, the behavior suggests a low level of attention to the online class.
+",3.0,4.0,6
+2025-03-06T17:52:08.029627,2.0,"Okay, I will analyze the student's attention levels based on the webcam screenshots provided.
+
+1.  ATTENTIVENESS_RATING (1-10): 2
+
+2.  EYE_CONTACT_SCORE (1-10): 2
+    - The student is not making eye contact with the screen in either image. The gaze is directed away from the camera/screen.
+
+3.  POSTURE_SCORE (1-10): 2
+    - The posture appears very casual and not conducive to attending a class. In the first image, the student is holding the camera at arm's length, likely taking a selfie.
+
+4.  FOCUS_DURATION: 0%
+
+5.  DETAILED_OBSERVATIONS:
+    - The student is holding a phone in the first image, suggesting possible off-task behavior.
+    - There is another person in the background in both images, indicating a distracting environment.
+    - In the second image, the student appears to be drinking from a can.
+    - There is nothing indicating that the student is engaged with the class material.
+    - Overall, the screenshots suggest a significant lack of attentiveness.
+
+",2.0,2.0,0
+2025-03-06T17:52:40.149227,6.0,"Okay, I will analyze the student's attentiveness based on the provided image.
+
+1. ATTENTIVENESS_RATING (1-10): 6
+
+2. EYE_CONTACT_SCORE (1-10): 7
+- The student seems to be looking at the camera/screen but the presence of another person and the slight angle suggests potential divided attention.
+
+3. POSTURE_SCORE (1-10): 6
+- The student's posture appears to be fairly upright, but the viewing angle is unusual.
+
+4. FOCUS_DURATION: 60%
+
+5. DETAILED_OBSERVATIONS:
+- The student is smiling and appears to be looking directly at the camera which suggests some engagement.
+- However, the presence of another person in the frame is a potential distraction. Their attention could be divided between the online class and the other person.
+- The image is very bright, creating glare, which can make it hard to accurately determine pupil direction.
+- There is another person to the right of the screen.
+",7.0,6.0,36
+2025-03-06T17:52:59.475035,5.0,"Okay, here's my analysis of the student's attentiveness based on the provided webcam screenshot:
+
+ATTENTIVENESS_RATING: 5
+
+EYE_CONTACT_SCORE: 6
+- The student's face is visible and oriented towards the camera, suggesting some level of eye contact. However, the gaze is not perfectly direct, possibly looking slightly off-center.
+
+POSTURE_SCORE: 5
+- The student's posture is difficult to fully assess due to the camera angle, which is below the head. The person looks like they are possibly moving or holding the camera. It isn't an ideal student posture.
+
+FOCUS_DURATION: 50%
+
+DETAILED_OBSERVATIONS:
+- The student appears to be in an indoor environment with lighting.
+- Facial expression seems relaxed, which could indicate they're following the material or not under pressure.
+- Background is distracting.
+- The low camera angle makes it difficult to ascertain proper posture and focus. Student is not in a good state for learning.",6.0,5.0,30
