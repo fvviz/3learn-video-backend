@@ -285,15 +285,14 @@ async def job_status(request: AnalyzeJobRequest):
         timestamp = datetime.fromisoformat(latest['timestamp'])
         formatted_time = timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
-        status_text = f"""
-Time: {formatted_time}
-Attentiveness Rating: {latest['attentiveness_rating']:.1f}/10
-Eye Contact Score: {latest['eye_contact_score']:.1f}/10
-Posture Score: {latest['posture_score']:.1f}/10
-Focus Duration: {latest['focus_duration']} seconds
-Comment: {latest['comment']}
-"""
-        return {"status": status_text.strip()}
+        return {
+            "timestamp": formatted_time,
+            "attentiveness_rating": float(latest['attentiveness_rating']),
+            "eye_contact_score": float(latest['eye_contact_score']), 
+            "posture_score": float(latest['posture_score']),
+            "focus_duration": int(latest['focus_duration']),
+            "comment": str(latest['comment'])
+        }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error getting job status: {str(e)}") 
+        raise HTTPException(status_code=500, detail=f"Error getting job status: {str(e)}")
