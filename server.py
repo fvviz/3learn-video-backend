@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 import csv
@@ -14,7 +15,14 @@ import asyncio
 from asyncio import create_task
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://positive-clearly-tiger.ngrok-free.app"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 # CORS middleware setu
 # Constants and global state
 API_KEY = "AIzaSyBEXbKEkhwdvpf62CAMMVymn-MJ1Tt3Sjg"
