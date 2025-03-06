@@ -40,6 +40,8 @@ def analyze_student_attention(images: List[Union[str, PIL.Image.Image]], api_key
         """
         You are an expert supervisor monitoring student attention in an online class through webcam screenshots.
         Analyze the student's attention levels and behavior in detail. DO not respond with anything but the final analysis.
+        Dont be super strict with the scores. Its normal for a student to have few weird expressions and have unusual environments in their background.
+        So penalise their scores only on serious cases like using mobile phones or looking away too much etc.
         
         Provide your analysis in the following structured format:
         
